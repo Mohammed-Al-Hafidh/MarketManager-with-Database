@@ -1,0 +1,161 @@
+﻿<Window x:Class="MarketManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MarketManager"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        mc:Ignorable="d"
+        Title="MarketManager" Height="535" Width="1030" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Dashboard">
+                <Grid>
+                    <ListView Name="lvProducts" HorizontalAlignment="Left" Height="364" Margin="158,40,0,0" VerticalAlignment="Top" Width="462" SelectionMode="Multiple" MouseDown="lvProducts_MouseDown">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdProduct}"/>
+                                <GridViewColumn Header="Product Brand" Width="100" DisplayMemberBinding="{Binding BrandName}"/>
+                                <GridViewColumn Header="Product Name" Width="100" DisplayMemberBinding="{Binding ProductName}"/>
+                                <GridViewColumn Header="Quantity" Width="60" DisplayMemberBinding="{Binding Quantity}"/>
+                                <GridViewColumn Header="Price" Width="55" DisplayMemberBinding="{Binding Price}"/>
+                                <GridViewColumn Header="Product Image">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Height="50" Width="50"  Source="{Binding ProductImage}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListView Name="lvBrands" HorizontalAlignment="Left" Height="366" Margin="16,38,0,0" VerticalAlignment="Top" Width="130" MouseDown="lvBrands_MouseDown">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdBrand}"/>
+                                <GridViewColumn Header="Brand Name" Width="90" DisplayMemberBinding="{Binding BrandName}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListView Name="lvCustomers" HorizontalAlignment="Left" Height="366" Margin="635,38,0,0" VerticalAlignment="Top" Width="372" MouseDown="lvCustomers_MouseDown">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdCustomer}"/>
+                                <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}"/>
+                                <GridViewColumn Header="Address" Width="130" DisplayMemberBinding="{Binding Address}"/>
+                                <GridViewColumn Header="Phone Number" Width="100" DisplayMemberBinding="{Binding PhoneNumber}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Name="btnAddProduct" Content="Add Product" HorizontalAlignment="Left" Height="20" Margin="158,411,0,0" VerticalAlignment="Top" Width="97" Click="btnAddProduct_Click"/>
+                    <Button Name="btnAddBrand" Content="Add Brand" HorizontalAlignment="Left" Height="20" Margin="32,409,0,0" VerticalAlignment="Top" Width="97" Click="btnAddBrand_Click"/>
+                    <Button Name="AddCustomer" Content="Add Customer" HorizontalAlignment="Left" Height="20" Margin="769,409,0,0" VerticalAlignment="Top" Width="97" Click="AddCustomer_Click"/>
+                    <Label Content="Products" HorizontalAlignment="Left" Margin="158,12,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Brands" HorizontalAlignment="Left" Margin="22,12,0,0" VerticalAlignment="Top" Height="28"/>
+                    <Label Content="Customers" HorizontalAlignment="Left" Margin="643,12,0,0" VerticalAlignment="Top"/>
+                    <Button Name="btnDeleteCustomer" Content="Delete customer" HorizontalAlignment="Left" Margin="769,434,0,0" VerticalAlignment="Top" Width="97" Click="btnDeleteCustomer_Click"/>
+                    <Button Name="btnDeleteBrand" Content="Delete brand" HorizontalAlignment="Left" Margin="32,434,0,0" VerticalAlignment="Top" Width="97" Click="btnDeleteBrand_Click"/>
+                    <Button Name="btnAddOrder" Content="Add product to order" HorizontalAlignment="Left" Height="20" Margin="483,411,0,0" VerticalAlignment="Top" Width="135" Click="btnAddOrder_Click"/>
+                    <xctk:DateTimePicker x:Name="dtpOrderDate" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{x:Static sys:DateTime.Now}"
+                      
+                     Margin="260,440,0,0"/>
+                    <Label Content="Order Date:" HorizontalAlignment="Left" Margin="331,409,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Orders" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="37*"/>
+                        <ColumnDefinition Width="210*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Name="lvOrdrs" HorizontalAlignment="Left" Height="403" Margin="0,34,0,0" VerticalAlignment="Top" Width="156" MouseDown="lvOrdrs_MouseDown" SelectionChanged="lvOrdrs_SelectionChanged" Grid.ColumnSpan="2">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="40" DisplayMemberBinding="{Binding IdOrder}"/>
+                                <GridViewColumn Header="Total Price" Width="100" DisplayMemberBinding="{Binding TotalPrice}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Label Content="Orders" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="53" Width="46"/>
+
+                    <ListView Name="lvOrderMain" IsEnabled="False" HorizontalAlignment="Left" Height="244" Margin="358.2,34,0,0" VerticalAlignment="Top" Width="362" MouseDown="lvOrderMain_MouseDown" SelectionChanged="lvOrderMain_SelectionChanged" Grid.Column="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Product Name" Width="150" DisplayMemberBinding="{Binding ProductName}"/>
+                                <GridViewColumn Header="Product Price" Width="95" DisplayMemberBinding="{Binding Price}"/>
+                                <GridViewColumn Header="Product Image">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Height="50" Width="50"  Source="{Binding ProductImage}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Label Content="Total Price:" HorizontalAlignment="Left" Margin="73,202,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="xxxx" Name="lblTotalPriceMain"  HorizontalAlignment="Left" Margin="207,203,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Customer Name:" HorizontalAlignment="Left" Margin="73,64,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="xxxx" Name="lblCustomerNameMain"  HorizontalAlignment="Left" Margin="207,64,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Customer Id:" HorizontalAlignment="Left" Margin="73,96,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="xxxx" Name="lblCustomerIdMain" HorizontalAlignment="Left" Margin="207,96,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Order Id:" HorizontalAlignment="Left" Margin="73,171,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="xxxx" Name="lblOrderIdMain"  HorizontalAlignment="Left" Margin="207,172,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="xxxx" VerticalAlignment="Top" HorizontalAlignment="Left" Name="lblOrderDateMain" Margin="207,134,0,0" Grid.Column="1"/>
+                    <Label Content="Order Date" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="74,134,0,0" Grid.Column="1"/>
+                    <Button Name="btnDeleteMain" Content="Delete Product" HorizontalAlignment="Left" Margin="498.2,283,0,0" VerticalAlignment="Top" Width="93" IsEnabled="False" Click="btnDeleteMain_Click" Grid.Column="1"/>
+                    <Button Name="btnDeleteOrderMain" Content="Delete Order" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Margin="34,442,0,0" Click="btnDeleteOrderMain_Click" Width="80"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Inventiry"  >
+                <Grid>
+
+                    <ListView Name="lvProductsInventory" HorizontalAlignment="Left" Height="293" Margin="10,38,0,0" VerticalAlignment="Top" Width="461" MouseDown="lvProductsInventory_MouseDown" SelectionChanged="lvProductsInventory_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdProduct}"/>
+                                <GridViewColumn Header="Product Brand" Width="100" DisplayMemberBinding="{Binding BrandName}"/>
+                                <GridViewColumn Header="Product Name" Width="100" DisplayMemberBinding="{Binding ProductName}"/>
+                                <GridViewColumn Header="Quantity" Width="60" DisplayMemberBinding="{Binding Quantity}"/>
+                                <GridViewColumn Header="Price" Width="55" DisplayMemberBinding="{Binding Price}"/>
+                                <GridViewColumn Header="Product Image">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Height="50" Width="50"  Source="{Binding ProductImage}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Label Content="Products" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <Button Name="btnUpdateProductInventory" Content="Update selected product" HorizontalAlignment="Left" Margin="619,357,0,0" VerticalAlignment="Top" Width="160" IsEnabled="False" Click="btnUpdateProductInventory_Click"/>
+                    <Label Content="Product Name:" HorizontalAlignment="Left" Margin="580,58,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Product Price:" HorizontalAlignment="Left" Margin="580,89,0,0" VerticalAlignment="Top"/>
+                    <TextBox Name="txtProductNameInventory" HorizontalAlignment="Left" Height="23" Margin="672,62,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+                    <TextBox Name="txtProductPriceInventory" HorizontalAlignment="Left" Height="23" Margin="672,93,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+                    <Label Content="Quantity:" HorizontalAlignment="Left" Margin="580,122,0,0" VerticalAlignment="Top"/>
+                    <TextBox Name="txtQuantityInventory" HorizontalAlignment="Left" Height="23" Margin="672,124,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+                    <Button Name="btnAddProductImage" Content="Add Image" HorizontalAlignment="Left" Margin="626,168,0,0" VerticalAlignment="Top" Width="150" Height="150" Click="btnAddProductImage_Click"/>
+                    <Button Name="btnDeleteProduct" Content="Delete selected product" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="619,391,0,0" Width="160" IsEnabled="False" Click="Button_Click"/>
+                </Grid>
+            </TabItem>
+
+
+
+
+
+
+
+
+
+
+
+
+        </TabControl>
+    </Grid>
+</Window>

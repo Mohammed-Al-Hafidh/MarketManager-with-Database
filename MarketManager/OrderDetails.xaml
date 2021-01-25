@@ -1,0 +1,30 @@
+﻿<Window x:Class="MarketManager.OrderDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MarketManager"
+        mc:Ignorable="d"
+        Title="OrderDetails" Height="300.4" Width="552" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <ListView Name="lvOrder" HorizontalAlignment="Left" Height="244" Margin="279,10,0,0" VerticalAlignment="Top" Width="257" MouseDown="lvOrder_MouseDown" SelectionChanged="lvOrder_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Product Name" Width="150" DisplayMemberBinding="{Binding ProductName}"/>
+                    <GridViewColumn Header="Product Price" Width="95" DisplayMemberBinding="{Binding Price}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="Total Price:" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblTotalPrice" Content="Label" HorizontalAlignment="Left" Margin="144,107,0,0" VerticalAlignment="Top"/>
+        <Label Content="Customer Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblCustomerName" Content="Label" HorizontalAlignment="Left" Margin="144,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Customer Id:" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblCustomerId" Content="Label" HorizontalAlignment="Left" Margin="144,45,0,0" VerticalAlignment="Top"/>
+        <Label Content="Order Id:" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top"/>
+        <Label Name="lblOrderId" Content="Label" HorizontalAlignment="Left" Margin="144,76,0,0" VerticalAlignment="Top"/>
+        <Button Name="btnOk" Content="Ok" HorizontalAlignment="Left" Margin="34,177,0,0" VerticalAlignment="Top" Width="75" Click="btnOk_Click"/>
+        <Button Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="165,177,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="btnDelete_Click"/>
+
+    </Grid>
+</Window>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,17 +32,25 @@ namespace MarketManager
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if ((txtName.Text == string.Empty)|| (txtAddress.Text == string.Empty)|| (txtPhoneNo.Text == string.Empty))
+            
+            AddCustomer();
+        }
+
+        private void AddCustomer()
+        {
+            if ((txtName.Text == string.Empty) || (txtAddress.Text == string.Empty) || (txtPhoneNo.Text == string.Empty))
             {
                 MessageBox.Show("Can not have empty records", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            //int phoneNo;
-            //if(!int.TryParse(txtPhoneNo.Text, out phoneNo))
-            //{
-            //    MessageBox.Show("Phone number should be numbers", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return;
-            //}
+            string pattern = @"\d{10}";
+            Regex rg = new Regex(pattern);
+            if (!rg.IsMatch(txtPhoneNo.Text))
+            {
+                MessageBox.Show("Phone number should be only 10 digits", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             Customer customer = new Customer
             {
                 Name = txtName.Text,

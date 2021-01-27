@@ -15,11 +15,10 @@ using System.Windows.Navigation;
 
 namespace MarketManager
 {
-
-
     public partial class MainWindow : Window
     {
         byte[] ImageData;
+        Order selectedOrder;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,17 +38,21 @@ namespace MarketManager
 
         private void btnAddProduct_Click(object sender, RoutedEventArgs e)
         {
+            AddProduct();
+        }
+        public void AddProduct()
+        {
             if (lvBrands.SelectedIndex == -1)
             {
                 MessageBox.Show("You need to select a brand", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
-            }           
+            }
 
             Brand brand = (Brand)lvBrands.SelectedItem;
             NewProduct newProduct = new NewProduct(brand);
             newProduct.Owner = this;
             bool? result = newProduct.ShowDialog();
-            
+
 
             if (result == true)
             {
@@ -59,11 +62,16 @@ namespace MarketManager
             {
                 MessageBox.Show("Request canceled", "Cancel", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-
         }
 
         private void btnAddBrand_Click(object sender, RoutedEventArgs e)
         {            
+            
+            AddBrand();
+        }
+
+        private void AddBrand()
+        {
             NewBrand newBrand = new NewBrand();
             newBrand.Owner = this;
             bool? result = newBrand.ShowDialog();
@@ -76,49 +84,59 @@ namespace MarketManager
             {
                 MessageBox.Show("Request canceled", "Cancel", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
         }
 
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
+        {            
+            AddOrder();
+            RefreshListViews();
+        }
+
+        private void AddOrder()
         {
-            if ((lvProducts.SelectedIndex == -1)||(lvCustomers.SelectedIndex==-1))
+            if ((lvProducts.SelectedIndex == -1) || (lvCustomers.SelectedIndex == -1))
             {
                 MessageBox.Show("You need to select a product and a customer", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            Customer customer = (Customer)lvCustomers.SelectedItem;                       
+            Customer customer = (Customer)lvCustomers.SelectedItem;
             Order order = new Order
-            {                                     
+            {
                 IdCustomer = customer.IdCustomer
             };
             foreach (Product p in lvProducts.SelectedItems)
             {
                 if (p.Inventory.Quantity <= 0)
                 {
-                    MessageBox.Show("You have 0 of" + p.ProductName + " in the inventory", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("You have 0 of" + p.ProductName + " in the inventory"
+                        , "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
-                foreach (Product p in lvProducts.SelectedItems)
+            foreach (Product p in lvProducts.SelectedItems)
             {
                 order.Products.Add(p);
-                //order.Orderdate = dpOrderDate.SelectedDate.ToString();
                 order.Orderdate = dtpOrderDate.Value.ToString();
                 order.TotalPrice += p.Price;
                 p.Inventory.Quantity -= 1;
-            }            
-            
+            }
+
             Globals.ctx.Orders.Add(order);
             Globals.ctx.SaveChanges();
-            RefreshListViews();
         }
 
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {            
+            
+            AddCustomer();
+        }
+
+        private void AddCustomer()
+        {
             NewCustomer newCustomer = new NewCustomer();
             newCustomer.Owner = this;
-            bool? result = newCustomer.ShowDialog();            
+            bool? result = newCustomer.ShowDialog();
 
             if (result == true)
             {
@@ -129,6 +147,7 @@ namespace MarketManager
                 MessageBox.Show("Request canceled", "Cancel", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+
         public void RefreshListViews()
         {
             LoadData();
@@ -182,31 +201,13 @@ namespace MarketManager
             }
         }
 
-        //private void btnShowOrderDetails_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (lvOrdrs.SelectedIndex == -1) 
-        //    {
-        //        MessageBox.Show("You need to select an order", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return;
-        //    }
-        //    Order order = (Order)lvOrdrs.SelectedItem;
-        //    List<Order> allOrders = Globals.ctx.Orders.Include("Products").ToList();
-        //    Order sendOrder = allOrders.Where(o => o.IdOrder == order.IdOrder).FirstOrDefault();            
-
-        //    OrderDetails orderDetails = new OrderDetails(sendOrder);
-        //    orderDetails.Owner = this;
-        //    bool? result = orderDetails.ShowDialog();
-        //    if (result == true)
-        //    {
-        //        RefreshListViews();
-        //    }
-        //    else if (result == false)
-        //    {
-        //        MessageBox.Show("Request canceled", "Cancel", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
-
         private void btnDeleteCustomer_Click(object sender, RoutedEventArgs e)
+        {            
+            DeleteCustomer();
+            RefreshListViews();
+        }
+
+        private void DeleteCustomer()
         {
             if (lvCustomers.SelectedIndex == -1)
             {
@@ -216,37 +217,27 @@ namespace MarketManager
             Customer customerToBeDeleted = (Customer)lvCustomers.SelectedItem;
             Globals.ctx.Customers.Remove(customerToBeDeleted);
             Globals.ctx.SaveChanges();
-            RefreshListViews();
         }
 
         private void btnDeleteBrand_Click(object sender, RoutedEventArgs e)
+        {            
+            DeleteBrand();
+            RefreshListViews();
+        }
+
+        private void DeleteBrand()
         {
             if (lvBrands.SelectedIndex == -1)
             {
                 MessageBox.Show("You need to select a customer", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            Brand brandToBeDeleted = (Brand)lvBrands.SelectedItem;            
+            Brand brandToBeDeleted = (Brand)lvBrands.SelectedItem;
             Globals.ctx.Brands.Remove(brandToBeDeleted);
             Globals.ctx.SaveChanges();
-            RefreshListViews();
         }
 
-        private void btnShowInventory_Click(object sender, RoutedEventArgs e)
-        {
-            MyInventory myInventory = new MyInventory();
-            myInventory.Owner = this;
-            bool? result = myInventory.ShowDialog();
-            
-            if (result == true)
-            {
-                RefreshListViews();
-            }
-            else if (result == false)
-            {
-                MessageBox.Show("Request canceled", "Cancel", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+
         //Start Inventory Tab//
         public void LoadDataInventory()
         {
@@ -273,6 +264,12 @@ namespace MarketManager
 
         private void lvProductsInventory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
+            LvProductsSelectionChanged();
+        }
+
+        private void LvProductsSelectionChanged()
+        {
             if (lvProductsInventory.SelectedIndex == -1)
                 return;
             btnUpdateProductInventory.IsEnabled = true;
@@ -292,18 +289,22 @@ namespace MarketManager
             if (ImageData != null)
             {
                 ImageBrush brush = new ImageBrush();
-                //BitmapImage bi = new BitmapImage(ImageData);/////////////////
                 BitmapImage bi = Util.ToImage(ImageData);
 
                 brush.ImageSource = bi;
                 btnAddProductImage.Content = "";
                 btnAddProductImage.Background = brush;
             }
-
         }
-        
 
         private void btnUpdateProductInventory_Click(object sender, RoutedEventArgs e)
+        {            
+            UpdateProductInventory();
+            RefreshAllInventory();
+            RefreshListViews();
+        }
+
+        private void UpdateProductInventory()
         {
             Product productToBeUpdated = (Product)lvProductsInventory.SelectedItem;
             productToBeUpdated.ProductName = txtProductNameInventory.Text;
@@ -323,8 +324,6 @@ namespace MarketManager
             productToBeUpdated.ProductImage = ImageData;
             productToBeUpdated.Inventory.Quantity = quantity;
             Globals.ctx.SaveChanges();
-            RefreshAllInventory();
-            RefreshListViews();
         }
 
         private void lvProductsInventory_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -336,6 +335,12 @@ namespace MarketManager
         }
         private void btnAddProductImage_Click(object sender, RoutedEventArgs e)
         {
+            
+            AddProductImage();
+        }
+
+        private void AddProductImage()
+        {
             FileStream fs;
             BinaryReader br;
 
@@ -344,14 +349,9 @@ namespace MarketManager
             openFileDialog.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|GIF Files (*.gif)|*.gif";
             if (openFileDialog.ShowDialog() == true)
             {
-                //imgProductImage.Source= new BitmapImage(new Uri(openFileDialog.FileName));
-
-
                 Image img = new Image();
                 img.Source = new BitmapImage(new Uri(openFileDialog.FileName));
-
                 btnAddProductImage.Content = "";
-                //btnImage.Content = "";
 
                 // Set button background
                 ImageBrush brush = new ImageBrush();
@@ -369,20 +369,25 @@ namespace MarketManager
                 fs.Close();
             }
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
+        {            
+            DeleteProduct();
+            RefreshAllInventory();
+            RefreshListViews();
+        }
+
+        private void DeleteProduct()
         {
             if (lvProductsInventory.SelectedIndex == -1)
                 return;
             Product productToBeDeleted = (Product)lvProductsInventory.SelectedItem;
-            Globals.ctx.Products.Remove(productToBeDeleted);            
+            Globals.ctx.Products.Remove(productToBeDeleted);
             Globals.ctx.SaveChanges();
-            RefreshAllInventory();
-            RefreshListViews();
         }
         //End Inventory Tab//
 
-        //Start Orders Tab//
-        Order selectedOrder;
+        //Start Orders Tab//        
         public void LoadDataOrderMain()
         {
             lvOrdrs.ItemsSource = Globals.ctx.Orders.ToList();
@@ -394,7 +399,6 @@ namespace MarketManager
             lblOrderDateMain.Content = selectedOrder.Orderdate;
             lvOrderMain.Items.Refresh();
             btnDeleteMain.IsEnabled = false;
-
         }
         public void RefreshOrderMain()
         {
@@ -407,8 +411,7 @@ namespace MarketManager
             {
                 lvOrderMain.UnselectAll();
                 btnDeleteMain.IsEnabled = false;
-            }
-            
+            }            
         }
 
         private void lvOrderMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -420,6 +423,13 @@ namespace MarketManager
 
         private void btnDeleteMain_Click(object sender, RoutedEventArgs e)
         {
+            DeleteProductFromOrder();
+            LoadDataOrderMain();
+            RefreshOrderMain();
+        }
+
+        private void DeleteProductFromOrder()
+        {
             if (lvOrderMain.SelectedIndex == -1)
             {
                 MessageBox.Show("You need to select one item", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -429,16 +439,18 @@ namespace MarketManager
             selectedOrder.TotalPrice -= productToBeDeleted.Price;
             selectedOrder.Products.Remove(productToBeDeleted);
             Globals.ctx.SaveChanges();
-            LoadDataOrderMain();
-            RefreshOrderMain();
         }
 
         private void lvOrdrs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {                        
+            LvOrderSelectionChanged();
+        }
+
+        private void LvOrderSelectionChanged()
         {
-            
-            if (lvOrdrs.SelectedIndex == -1)            
+            if (lvOrdrs.SelectedIndex == -1)
                 return;
-            
+
             lvOrderMain.IsEnabled = true;
             Order order = (Order)lvOrdrs.SelectedItem;
             List<Order> allOrders = Globals.ctx.Orders.Include("Products").ToList();
@@ -449,8 +461,13 @@ namespace MarketManager
         }
 
         private void btnDeleteOrderMain_Click(object sender, RoutedEventArgs e)
+        {            
+            DeleteOrder();
+        }
+
+        private void DeleteOrder()
         {
-            if (lvOrdrs.SelectedIndex == -1) 
+            if (lvOrdrs.SelectedIndex == -1)
             {
                 MessageBox.Show("You need to select one item", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -468,14 +485,7 @@ namespace MarketManager
             lblOrderDateMain.Content = "";
             lvOrdrs.ItemsSource = Globals.ctx.Orders.ToList();
             lvOrdrs.Items.Refresh();
-
         }
-
-        
-
-
         //End Orders Tab//
-
-
     }
 }

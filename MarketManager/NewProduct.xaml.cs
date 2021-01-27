@@ -37,6 +37,12 @@ namespace MarketManager
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            
+            AddProduct();
+        }
+
+        private void AddProduct()
+        {
             if ((txtName.Text == string.Empty) || (txtPrice.Text == string.Empty) || (txtQuantity.Text == string.Empty))
             {
                 MessageBox.Show("Can not have empty records", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -71,6 +77,12 @@ namespace MarketManager
 
         private void btnAddProductImage_Click(object sender, RoutedEventArgs e)
         {
+            
+            AddProductImage();
+        }
+
+        private void AddProductImage()
+        {
             FileStream fs;
             BinaryReader br;
 
@@ -79,20 +91,14 @@ namespace MarketManager
             openFileDialog.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|GIF Files (*.gif)|*.gif";
             if (openFileDialog.ShowDialog() == true)
             {
-                //imgProductImage.Source= new BitmapImage(new Uri(openFileDialog.FileName));
-
-
                 Image img = new Image();
                 img.Source = new BitmapImage(new Uri(openFileDialog.FileName));
-
                 btnAddProductImage.Content = "";
-               //btnImage.Content = "";
 
                 // Set button background
                 ImageBrush brush = new ImageBrush();
                 BitmapImage bi = new BitmapImage(new Uri(openFileDialog.FileName));
                 brush.ImageSource = bi;
-                ///Image.Background = brush;
                 btnAddProductImage.Background = brush;
 
                 //Image to byte[] to save it in database

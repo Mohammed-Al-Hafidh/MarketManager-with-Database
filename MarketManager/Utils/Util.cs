@@ -15,7 +15,7 @@ namespace MarketManager
             {
                 var image = new BitmapImage();
                 image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.CacheOption = BitmapCacheOption.OnLoad; 
                 image.StreamSource = ms;
                 image.EndInit();
                 return image;

@@ -20,8 +20,7 @@ namespace MarketManager
         public DbSet<Inventory> Inventories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            // Configure Student & StudentAddress entity
+        {            
             modelBuilder.Entity<Product>()
                         .HasRequired(p => p.Inventory)
                         .WithRequiredPrincipal(i => i.Product);

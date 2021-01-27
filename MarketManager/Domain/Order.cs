@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarketManager
 {
-    public partial class Order
+    public class Order
     {
         public Order()
         {

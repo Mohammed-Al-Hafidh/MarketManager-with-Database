@@ -25,6 +25,11 @@ namespace MarketManager
         }
 
         private void btnAddBrand_Click(object sender, RoutedEventArgs e)
+        {            
+            AddBrand();
+        }
+
+        private void AddBrand()
         {
             if (txtAddBrand.Text == string.Empty)
             {

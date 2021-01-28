@@ -92,7 +92,7 @@ namespace MarketManager
             {
                 if (p.Inventory.Quantity <= 0)
                 {
-                    MessageBox.Show("You have 0 of" + p.ProductName + " in the inventory"
+                    MessageBox.Show("You have 0 of " + p.ProductName + " in the inventory"
                         , "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
@@ -393,17 +393,23 @@ namespace MarketManager
         {
             lvOrdrs.ItemsSource = Globals.ctx.Orders.ToList();
             lvOrderMain.ItemsSource = selectedOrder.Products.ToList<Product>();
-            lblCustomerIdMain.Content = selectedOrder.Customer.IdCustomer;
-            lblCustomerNameMain.Content = selectedOrder.Customer.Name;
-            lblOrderIdMain.Content = selectedOrder.IdOrder;
-            lblTotalPriceMain.Content = selectedOrder.TotalPrice;
-            lblOrderDateMain.Content = selectedOrder.Orderdate;
+            
+            
             lvOrderMain.Items.Refresh();
             btnDeleteMain.IsEnabled = false;
+            btnExportOrder.IsEnabled = false;
         }
         public void RefreshOrderMain()
         {
             LoadDataOrderMain();
+            btnDeleteOrderMain.IsEnabled = false;
+            lvOrdrs.UnselectAll();
+            lvOrderMain.ItemsSource = null;
+            lblCustomerIdMain.Content = "";
+            lblCustomerNameMain.Content = "";
+            lblOrderIdMain.Content = "";
+            lblTotalPriceMain.Content = "";
+            lblOrderDateMain.Content = "";                        
         }
         private void lvOrderMain_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -412,6 +418,7 @@ namespace MarketManager
             {
                 lvOrderMain.UnselectAll();
                 btnDeleteMain.IsEnabled = false;
+                btnExportOrder.IsEnabled = false;
             }            
         }
 
@@ -424,8 +431,7 @@ namespace MarketManager
 
         private void btnDeleteMain_Click(object sender, RoutedEventArgs e)
         {
-            DeleteProductFromOrder();
-            LoadDataOrderMain();
+            DeleteProductFromOrder();           
             RefreshOrderMain();
         }
 
@@ -459,9 +465,17 @@ namespace MarketManager
             Order order = (Order)lvOrdrs.SelectedItem;
             List<Order> allOrders = Globals.ctx.Orders.Include("Products").ToList();
             selectedOrder = allOrders.Where(o => o.IdOrder == order.IdOrder).FirstOrDefault();
+
+            lblCustomerIdMain.Content = selectedOrder.Customer.IdCustomer;
+            lblCustomerNameMain.Content = selectedOrder.Customer.Name;
+            lblOrderIdMain.Content = selectedOrder.IdOrder;
+            lblTotalPriceMain.Content = selectedOrder.TotalPrice;
+            lblOrderDateMain.Content = selectedOrder.Orderdate;
+
             LoadDataOrderMain();
 
             btnDeleteOrderMain.IsEnabled = true;
+            btnExportOrder.IsEnabled = true;
         }
 
         private void btnDeleteOrderMain_Click(object sender, RoutedEventArgs e)
@@ -479,16 +493,49 @@ namespace MarketManager
             Order orderToBeDeleted = (Order)lvOrdrs.SelectedItem;
             Globals.ctx.Orders.Remove(orderToBeDeleted);
             Globals.ctx.SaveChanges();
-            btnDeleteOrderMain.IsEnabled = false;
-            lvOrdrs.UnselectAll();
-            lvOrderMain.ItemsSource = null;
-            lblCustomerIdMain.Content = "";
-            lblCustomerNameMain.Content = "";
-            lblOrderIdMain.Content = "";
-            lblTotalPriceMain.Content = "";
-            lblOrderDateMain.Content = "";
-            lvOrdrs.ItemsSource = Globals.ctx.Orders.ToList();
-            lvOrdrs.Items.Refresh();
+            RefreshOrderMain();
+        }
+
+        private void btnExportOrder_Click(object sender, RoutedEventArgs e)
+        {
+            ExportOrder();
+        }
+
+        private void ExportOrder()
+        {
+            if (lvOrdrs.SelectedIndex == -1)
+                return;
+            Order orderToBeSaved =(Order) lvOrdrs.SelectedItem;
+
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "CSV file (*.csv)|*.csv";
+            dialog.Title = "Export to file";
+            if (dialog.ShowDialog() == true)
+            {
+                string allData = "";
+
+                allData = string.Format("Customer Name:,{0}", orderToBeSaved.Customer.Name) + "\n";
+                allData += string.Format("Customer Id:,{0}", orderToBeSaved.Customer.IdCustomer) + "\n";
+                allData += string.Format("Customer Address:,{0}", orderToBeSaved.Customer.Address) + "\n";
+                allData += string.Format("Customer Phone No.:,{0}", orderToBeSaved.Customer.PhoneNumber) + "\n";
+                allData += string.Format("Order Date:,{0}", orderToBeSaved.Orderdate) + "\n";
+                allData += string.Format("Order Id:,{0}", orderToBeSaved.IdOrder) + "\n";
+                allData +="\n";
+                allData += string.Format("{0},{1},{2}","Brand Name","Product Name","Product Price" ) + "\n";
+                allData += "\n";
+                foreach (Product product in orderToBeSaved.Products)
+                {                    
+                    allData += string.Format("{0},{1},{2}",product.BrandName,product.ProductName,product.Price) +"\n";
+                }
+                allData += "\n";
+                allData += string.Format("{0},{1},{2}","","Total Price:",orderToBeSaved.TotalPrice);
+               
+                File.WriteAllText(dialog.FileName, allData);
+            }
+            else
+            {
+                MessageBox.Show("File error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         //End Orders Tab//
     }

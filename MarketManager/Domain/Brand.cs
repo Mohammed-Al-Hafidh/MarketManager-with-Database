@@ -6,10 +6,7 @@ namespace MarketManager
 {
     public class Brand
     {
-        //public Brand()
-        //{
-        //    this.Products = new HashSet<Product>();
-        //}
+        
         [Key]
         [Required]
         public int IdBrand { get; set; }

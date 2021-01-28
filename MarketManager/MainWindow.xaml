@@ -114,6 +114,7 @@
                     <Label Content="Order Date" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="74,134,0,0" Grid.Column="1"/>
                     <Button Name="btnDeleteMain" Content="Delete Product" HorizontalAlignment="Left" Margin="498.2,283,0,0" VerticalAlignment="Top" Width="93" IsEnabled="False" Click="btnDeleteMain_Click" Grid.Column="1"/>
                     <Button Name="btnDeleteOrderMain" Content="Delete Order" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Margin="34,442,0,0" Click="btnDeleteOrderMain_Click" Width="80"/>
+                    <Button Name="btnExportOrder" Content="Export order to Excel file" Height="20" Width="165" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="74,268,0,0" Grid.Column="1" Click="btnExportOrder_Click" IsEnabled="False"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Inventory"  >
@@ -147,8 +148,10 @@
                     <TextBox Name="txtQuantityInventory" HorizontalAlignment="Left" Height="23" Margin="672,124,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
                     <Button Name="btnAddProductImage" Content="Add Image" HorizontalAlignment="Left" Margin="626,168,0,0" VerticalAlignment="Top" Width="150" Height="150" Click="btnAddProductImage_Click"/>
                     <Button Name="btnDeleteProduct" Content="Delete selected product" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="619,391,0,0" Width="160" IsEnabled="False" Click="Button_Click"/>
+                    
                 </Grid>
             </TabItem>
+            
 
 
 

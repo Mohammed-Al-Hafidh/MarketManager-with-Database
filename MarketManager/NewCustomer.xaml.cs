@@ -20,9 +20,23 @@ namespace MarketManager
     /// </summary>
     public partial class NewCustomer : Window
     {
-        public NewCustomer()
+        Customer currentCustomer;
+        public NewCustomer(Customer customer)
         {
             InitializeComponent();
+            if (customer!=null)
+            {
+                currentCustomer = customer;
+                btnAdd.Content = "Update";
+                LoadCustomer();
+            }                        
+        }
+
+        private void LoadCustomer()
+        {
+            txtName.Text = currentCustomer.Name;
+            txtAddress.Text = currentCustomer.Address;
+            txtPhoneNo.Text = currentCustomer.PhoneNumber;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -51,13 +65,23 @@ namespace MarketManager
                 return;
             }
 
-            Customer customer = new Customer
+            if (btnAdd.Content.Equals("Update"))
             {
-                Name = txtName.Text,
-                Address = txtAddress.Text,
-                PhoneNumber = txtPhoneNo.Text
-            };
-            Globals.ctx.Customers.Add(customer);
+                currentCustomer.Name = txtName.Text;
+                currentCustomer.Address = txtAddress.Text;
+                currentCustomer.PhoneNumber = txtPhoneNo.Text;
+            }
+            else
+            {
+                Customer customer = new Customer
+                {
+                    Name = txtName.Text,
+                    Address = txtAddress.Text,
+                    PhoneNumber = txtPhoneNo.Text
+                };
+                Globals.ctx.Customers.Add(customer);
+            }
+            
             Globals.ctx.SaveChanges();
             DialogResult = true;
         }

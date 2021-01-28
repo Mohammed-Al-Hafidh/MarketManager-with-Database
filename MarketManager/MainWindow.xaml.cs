@@ -96,14 +96,13 @@ namespace MarketManager
                     return;
                 }
             }
+            order.Orderdate = dtpOrderDate.Value.ToString();
             foreach (Product p in lvProducts.SelectedItems)
             {
-                order.Products.Add(p);
-                order.Orderdate = dtpOrderDate.Value.ToString();
+                order.Products.Add(p);                
                 order.TotalPrice += p.Price;
                 p.Inventory.Quantity -= 1;
             }
-
             Globals.ctx.Orders.Add(order);
             Globals.ctx.SaveChanges();
         }
@@ -116,7 +115,17 @@ namespace MarketManager
 
         private void AddNewCustomer()
         {
-            NewCustomer newCustomer = new NewCustomer();
+            Customer customer = new Customer();
+            NewCustomer newCustomer;
+            if (lvCustomers.SelectedIndex!=-1)
+            {
+                customer = (Customer)lvCustomers.SelectedItem;
+                newCustomer = new NewCustomer(customer);
+            }
+            else
+            {
+                newCustomer = new NewCustomer(null);
+            }            
             newCustomer.Owner = this;
             bool? result = newCustomer.ShowDialog();
             CheckResult(result);
@@ -224,7 +233,17 @@ namespace MarketManager
             Globals.ctx.Brands.Remove(brandToBeDeleted);
             Globals.ctx.SaveChanges();
         }
-
+        private void lvCustomers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lvCustomers.SelectedIndex != -1)
+            {
+                btnAddCustomer.Content = "Update Customer";
+            }
+            else
+            {
+                btnAddCustomer.Content = "Add Customer";
+            }
+        }
 
         //Start Inventory Tab//
         public void LoadDataInventory()
@@ -536,6 +555,8 @@ namespace MarketManager
                 MessageBox.Show("File error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        
         //End Orders Tab//
     }
 }

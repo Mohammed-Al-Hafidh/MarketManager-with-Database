@@ -155,9 +155,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Background1.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Background2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Background3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Background4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Background5.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

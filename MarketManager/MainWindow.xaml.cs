@@ -21,8 +21,7 @@ namespace MarketManager
         Order selectedOrder;
         public MainWindow()
         {
-            InitializeComponent();
-
+            InitializeComponent();            
             Globals.ctx = new MarketManagerDatabaseContext();            
             LoadData();
         }

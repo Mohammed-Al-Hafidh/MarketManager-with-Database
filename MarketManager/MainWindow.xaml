@@ -12,7 +12,12 @@
 
         <TabControl Grid.ColumnSpan="2">
             <TabItem Header="Dashboard">
-                <Grid >
+                <Grid x:Name="grdDashboard" >
+                    <Grid.Background>
+                        <ImageBrush ImageSource="/Images/Background1.jpg" Opacity="0.3"/>
+                    </Grid.Background>
+
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="161*"/>
                         <ColumnDefinition Width="857*"/>
@@ -35,7 +40,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListView Name="lvBrands" HorizontalAlignment="Left" Height="366" Margin="16,38,0,0" VerticalAlignment="Top" Width="130" MouseDown="lvBrands_MouseDown">
+                    <ListView Name="lvBrands" HorizontalAlignment="Left" Height="366" Margin="16,38,0,0" VerticalAlignment="Top" Width="130" MouseDown="lvBrands_MouseDown" Background="Transparent">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdBrand}"/>
@@ -43,7 +48,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListView Name="lvCustomers" HorizontalAlignment="Left" Height="366" Margin="478,38,0,0" VerticalAlignment="Top" Width="372" MouseDown="lvCustomers_MouseDown" Grid.Column="1">
+                    <ListView Name="lvCustomers" HorizontalAlignment="Left" Height="366" Margin="478,38,0,0" VerticalAlignment="Top" Width="372" MouseDown="lvCustomers_MouseDown" Grid.Column="1" Background="Transparent">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdCustomer}"/>
@@ -71,12 +76,15 @@
 
 
             <TabItem Header="Orders" >
-                <Grid>
+                <Grid x:Name="grdOrders">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="/Images/Background2.jpg" Opacity="0.3"/>
+                    </Grid.Background>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="37*"/>
                         <ColumnDefinition Width="210*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Name="lvOrdrs" HorizontalAlignment="Left" Height="403" Margin="0,34,0,0" VerticalAlignment="Top" Width="156" MouseDown="lvOrdrs_MouseDown" SelectionChanged="lvOrdrs_SelectionChanged" Grid.ColumnSpan="2">
+                    <ListView Name="lvOrdrs" HorizontalAlignment="Left" Height="403" Margin="0,34,0,0" VerticalAlignment="Top" Width="156" MouseDown="lvOrdrs_MouseDown" SelectionChanged="lvOrdrs_SelectionChanged" Grid.ColumnSpan="2" Background="Transparent">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" Width="40" DisplayMemberBinding="{Binding IdOrder}"/>
@@ -86,7 +94,7 @@
                     </ListView>
                     <Label Content="Orders" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="53" Width="46"/>
 
-                    <ListView Name="lvOrderMain" IsEnabled="False" HorizontalAlignment="Left" Height="244" Margin="358.2,34,0,0" VerticalAlignment="Top" Width="362" MouseDown="lvOrderMain_MouseDown" SelectionChanged="lvOrderMain_SelectionChanged" Grid.Column="1">
+                    <ListView Name="lvOrderMain" IsEnabled="False" HorizontalAlignment="Left" Height="244" Margin="358.2,34,0,0" VerticalAlignment="Top" Width="362" MouseDown="lvOrderMain_MouseDown" SelectionChanged="lvOrderMain_SelectionChanged" Grid.Column="1" Background="Transparent">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Product Name" Width="150" DisplayMemberBinding="{Binding ProductName}"/>
@@ -119,8 +127,11 @@
             </TabItem>
             <TabItem Header="Inventory"  >
                 <Grid>
+                    <Grid.Background>
+                        <ImageBrush ImageSource="/Images/Background5.jpg" Opacity="0.3"/>
+                    </Grid.Background>
 
-                    <ListView Name="lvProductsInventory" HorizontalAlignment="Left" Height="293" Margin="10,38,0,0" VerticalAlignment="Top" Width="461" MouseDown="lvProductsInventory_MouseDown" SelectionChanged="lvProductsInventory_SelectionChanged">
+                    <ListView Name="lvProductsInventory" HorizontalAlignment="Left" Height="293" Margin="10,38,0,0" VerticalAlignment="Top" Width="461" MouseDown="lvProductsInventory_MouseDown" SelectionChanged="lvProductsInventory_SelectionChanged" Background="Transparent">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdProduct}"/>

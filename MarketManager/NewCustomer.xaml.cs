@@ -52,12 +52,13 @@ namespace MarketManager
 
         private void AddCustomer()
         {
+            
             if ((txtName.Text == string.Empty) || (txtAddress.Text == string.Empty) || (txtPhoneNo.Text == string.Empty))
             {
                 MessageBox.Show("Can not have empty records", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            string pattern = @"\d{10}";
+            string pattern = @"^\d{10}$";
             Regex rg = new Regex(pattern);
             if (!rg.IsMatch(txtPhoneNo.Text))
             {

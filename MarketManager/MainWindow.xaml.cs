@@ -195,6 +195,7 @@ namespace MarketManager
                 lblTotalPriceMain.Content = "";
                 lblOrderDateMain.Content = "";
                 btnDeleteOrderMain.IsEnabled = false;
+                btnExportOrder.IsEnabled = false;
             }
         }
 
@@ -436,7 +437,7 @@ namespace MarketManager
             {
                 lvOrderMain.UnselectAll();
                 btnDeleteMain.IsEnabled = false;
-                btnExportOrder.IsEnabled = false;
+                
             }            
         }
 

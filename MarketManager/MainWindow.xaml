@@ -9,14 +9,15 @@
         mc:Ignorable="d"
         Title="MarketManager" Height="535" Width="1030" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        <TabControl>
+
+        <TabControl Grid.ColumnSpan="2">
             <TabItem Header="Dashboard">
-                <Grid>
+                <Grid >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="158*"/>
-                        <ColumnDefinition Width="861*"/>
+                        <ColumnDefinition Width="161*"/>
+                        <ColumnDefinition Width="857*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Name="lvProducts" HorizontalAlignment="Left" Height="364" Margin="0.5,40,0,0" VerticalAlignment="Top" Width="462" SelectionMode="Multiple" MouseDown="lvProducts_MouseDown" Grid.Column="1">
+                    <ListView Name="lvProducts" HorizontalAlignment="Left" Height="366" Margin="0,38,0,0" VerticalAlignment="Top" Width="462" SelectionMode="Multiple" MouseDown="lvProducts_MouseDown" Grid.Column="1" Background="Transparent">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdProduct}"/>
@@ -42,7 +43,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListView Name="lvCustomers" HorizontalAlignment="Left" Height="366" Margin="477.5,38,0,0" VerticalAlignment="Top" Width="372" MouseDown="lvCustomers_MouseDown" Grid.Column="1">
+                    <ListView Name="lvCustomers" HorizontalAlignment="Left" Height="366" Margin="478,38,0,0" VerticalAlignment="Top" Width="372" MouseDown="lvCustomers_MouseDown" Grid.Column="1">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding IdCustomer}"/>
@@ -52,19 +53,19 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button Name="btnAddProduct" Content="Add Product" HorizontalAlignment="Left" Height="20" Margin="0.5,411,0,0" VerticalAlignment="Top" Width="97" Click="btnAddProduct_Click" Grid.Column="1"/>
+                    <Button Name="btnAddProduct" Content="Add Product" HorizontalAlignment="Left" Height="20" Margin="0,409,0,0" VerticalAlignment="Top" Width="98" Click="btnAddProduct_Click" Grid.Column="1"/>
                     <Button Name="btnAddBrand" Content="Add Brand" HorizontalAlignment="Left" Height="20" Margin="32,409,0,0" VerticalAlignment="Top" Width="97" Click="btnAddBrand_Click"/>
-                    <Button Name="AddCustomer" Content="Add Customer" HorizontalAlignment="Left" Height="20" Margin="611.5,409,0,0" VerticalAlignment="Top" Width="97" Click="AddCustomer_Click" Grid.Column="1"/>
-                    <Label Content="Products" HorizontalAlignment="Left" Margin="0.5,12,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <Label Content="Brands" HorizontalAlignment="Left" Margin="22,12,0,0" VerticalAlignment="Top" Height="28"/>
-                    <Label Content="Customers" HorizontalAlignment="Left" Margin="485.5,12,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <Button Name="btnDeleteCustomer" Content="Delete customer" HorizontalAlignment="Left" Margin="611.5,434,0,0" VerticalAlignment="Top" Width="97" Click="btnDeleteCustomer_Click" Grid.Column="1"/>
-                    <Button Name="btnDeleteBrand" Content="Delete brand" HorizontalAlignment="Left" Margin="32,434,0,0" VerticalAlignment="Top" Width="97" Click="btnDeleteBrand_Click"/>
-                    <Button Name="btnAddOrder" Content="Add product to order" HorizontalAlignment="Left" Height="20" Margin="325.5,411,0,0" VerticalAlignment="Top" Width="135" Click="btnAddOrder_Click" Grid.Column="1"/>
+                    <Button Name="AddCustomer" Content="Add Customer" HorizontalAlignment="Left" Height="20" Margin="612,409,0,0" VerticalAlignment="Top" Width="96" Click="AddCustomer_Click" Grid.Column="1"/>
+                    <Label Content="Products" HorizontalAlignment="Left" Margin="0,12,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="56"/>
+                    <Label Content="Brands" HorizontalAlignment="Left" Margin="22,12,0,0" VerticalAlignment="Top" Height="28" Width="46"/>
+                    <Label Content="Customers" HorizontalAlignment="Left" Margin="486,12,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="66"/>
+                    <Button Name="btnDeleteCustomer" Content="Delete customer" HorizontalAlignment="Left" Margin="612,434,0,0" VerticalAlignment="Top" Width="96" Click="btnDeleteCustomer_Click" Grid.Column="1" Height="20"/>
+                    <Button Name="btnDeleteBrand" Content="Delete brand" HorizontalAlignment="Left" Margin="32,434,0,0" VerticalAlignment="Top" Width="97" Click="btnDeleteBrand_Click" Height="20"/>
+                    <Button Name="btnAddOrder" Content="Add product to order" HorizontalAlignment="Left" Height="20" Margin="328,409,0,0" VerticalAlignment="Top" Width="134" Click="btnAddOrder_Click" Grid.Column="1"/>
                     <xctk:DateTimePicker x:Name="dtpOrderDate" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{x:Static sys:DateTime.Now}"
                       
-                     Margin="102.5,440,0,0" Grid.Column="1"/>
-                    <Label Content="Order Date:" HorizontalAlignment="Left" Margin="173.5,409,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                     Margin="102,440,0,0" Grid.Column="1" Height="20" Width="260"/>
+                    <Label Content="Order Date:" HorizontalAlignment="Left" Margin="176,406,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="71"/>
                 </Grid>
             </TabItem>
 
@@ -115,7 +116,7 @@
                     <Button Name="btnDeleteOrderMain" Content="Delete Order" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Margin="34,442,0,0" Click="btnDeleteOrderMain_Click" Width="80"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Inventiry"  >
+            <TabItem Header="Inventory"  >
                 <Grid>
 
                     <ListView Name="lvProductsInventory" HorizontalAlignment="Left" Height="293" Margin="10,38,0,0" VerticalAlignment="Top" Width="461" MouseDown="lvProductsInventory_MouseDown" SelectionChanged="lvProductsInventory_SelectionChanged">

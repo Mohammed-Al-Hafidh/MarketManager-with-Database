@@ -52,16 +52,7 @@ namespace MarketManager
             NewProduct newProduct = new NewProduct(brand);
             newProduct.Owner = this;
             bool? result = newProduct.ShowDialog();
-
-
-            if (result == true)
-            {
-                RefreshListViews();
-            }
-            else if (result == false)
-            {
-                MessageBox.Show("Request canceled", "Cancel", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            CheckResult(result);
         }
 
         private void btnAddBrand_Click(object sender, RoutedEventArgs e)
@@ -75,15 +66,7 @@ namespace MarketManager
             NewBrand newBrand = new NewBrand();
             newBrand.Owner = this;
             bool? result = newBrand.ShowDialog();
-
-            if (result == true)
-            {
-                RefreshListViews();
-            }
-            else if (result == false)
-            {
-                MessageBox.Show("Request canceled", "Cancel", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            CheckResult(result);
         }
 
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
@@ -129,15 +112,19 @@ namespace MarketManager
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {            
             
-            AddCustomer();
+            AddNewCustomer();
         }
 
-        private void AddCustomer()
+        private void AddNewCustomer()
         {
             NewCustomer newCustomer = new NewCustomer();
             newCustomer.Owner = this;
             bool? result = newCustomer.ShowDialog();
-
+            CheckResult(result);
+           
+        }
+        private void CheckResult(bool? result)
+        {
             if (result == true)
             {
                 RefreshListViews();
@@ -169,6 +156,7 @@ namespace MarketManager
             HitTestResult r = VisualTreeHelper.HitTest(this, e.GetPosition(this));
             if (r.VisualHit.GetType() != typeof(ListBoxItem))
                 lvProducts.UnselectAll();
+            
         }
 
         private void lvBrands_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -183,6 +171,7 @@ namespace MarketManager
             HitTestResult r = VisualTreeHelper.HitTest(this, e.GetPosition(this));
             if (r.VisualHit.GetType() != typeof(ListBoxItem))
                 lvCustomers.UnselectAll();
+            
         }
 
         private void lvOrdrs_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -299,6 +288,7 @@ namespace MarketManager
 
         private void btnUpdateProductInventory_Click(object sender, RoutedEventArgs e)
         {            
+            
             UpdateProductInventory();
             RefreshAllInventory();
             RefreshListViews();
@@ -323,6 +313,17 @@ namespace MarketManager
             }
             productToBeUpdated.ProductImage = ImageData;
             productToBeUpdated.Inventory.Quantity = quantity;
+            
+            Globals.ctx.SaveChanges();
+            //Update total price in orders
+            foreach (var order in productToBeUpdated.Orders)
+            {
+                order.TotalPrice = 0;
+                foreach(var product in order.Products)
+                {
+                    order.TotalPrice += product.Price;
+                }
+            }
             Globals.ctx.SaveChanges();
         }
 
@@ -437,8 +438,11 @@ namespace MarketManager
             }
             Product productToBeDeleted = (Product)lvOrderMain.SelectedItem;
             selectedOrder.TotalPrice -= productToBeDeleted.Price;
-            selectedOrder.Products.Remove(productToBeDeleted);
+            //Adding the product back to inventory
+            productToBeDeleted.Inventory.Quantity++;
+            selectedOrder.Products.Remove(productToBeDeleted);            
             Globals.ctx.SaveChanges();
+            LoadData();
         }
 
         private void lvOrdrs_SelectionChanged(object sender, SelectionChangedEventArgs e)
